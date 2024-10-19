@@ -38,7 +38,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 localparam EGF_DIM = 8;
-localparam logic EGF_PRI_POL[EGF_DIM : 0] = '{1, 0, 1, 1, 1, 0, 0, 0, 1};
+localparam logic EGF_PRI_POL[EGF_DIM : 0] = '{1, 0, 0, 0, 1, 1, 1, 0, 1};
 
 localparam RSC_COR_CAP = 8;
 localparam RSC_PAR_LEN = 2 * RSC_COR_CAP;
