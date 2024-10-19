@@ -73,15 +73,12 @@ module enc_controller (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     always_comb begin
-        if (con_counter_new < RSC_MES_LEN % ENC_SYM) begin
-            pro_phase_new = PRO_IDL;
-        end else if (con_counter_new < ENC_SYM + RSC_MES_LEN % ENC_SYM) begin
-            pro_phase_new = PRO_PAR;
-        end else if (con_counter_new < RSC_MES_LEN + ENC_SYM) begin
-            pro_phase_new = PRO_FUL;
-        end else begin
-            pro_phase_new = PRO_IDL;
-        end
+        case (1'b1)
+            con_counter_new < RSC_MES_LEN % ENC_SYM: pro_phase_new = PRO_IDL;
+            con_counter_new < ENC_SYM + RSC_MES_LEN % ENC_SYM: pro_phase_new = PRO_PAR;
+            con_counter_new < RSC_MES_LEN + ENC_SYM: pro_phase_new = PRO_FUL;
+            default: pro_phase_new = PRO_IDL;
+        endcase
     end
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,33 +98,25 @@ module enc_controller (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     always_comb begin
-        if (con_counter_new == '0) begin
-            sel_phase_new = SEL_IDL;
-        end else if (con_counter_new < ENC_SYM) begin
-            sel_phase_new = SEL_PAR;
-        end else if (con_counter_new < RSC_MES_LEN + ENC_SYM) begin
-            sel_phase_new = SEL_MES;
-        end else if (con_counter_new <= RSC_COD_LEN) begin
-            sel_phase_new = SEL_PAR;
-        end else begin
-            sel_phase_new = SEL_IDL;
-        end
+        case (1'b1)
+            con_counter_new == '0: sel_phase_new = SEL_IDL;
+            con_counter_new < ENC_SYM: sel_phase_new = SEL_PAR;
+            con_counter_new < RSC_MES_LEN + ENC_SYM: sel_phase_new = SEL_MES;
+            con_counter_new <= RSC_COD_LEN: sel_phase_new = SEL_PAR;
+            default: sel_phase_new = SEL_IDL;
+        endcase
     end
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     always_comb begin
-        if (con_counter_new == '0) begin
-            sel_request_new = '0;
-        end else if (con_counter_new < ENC_SYM) begin
-            sel_request_new = con_counter_new;
-        end else if (con_counter_new <= RSC_MES_LEN) begin
-            sel_request_new = ENC_SYM;
-        end else if (con_counter_new < RSC_MES_LEN + ENC_SYM) begin
-            sel_request_new = RSC_MES_LEN + ENC_SYM - con_counter_new;
-        end else begin
-            sel_request_new = '0;
-        end
+        case (1'b1)
+            con_counter_new == '0: sel_request_new = '0;
+            con_counter_new < ENC_SYM: sel_request_new = con_counter_new;
+            con_counter_new <= RSC_MES_LEN: sel_request_new = ENC_SYM;
+            con_counter_new < RSC_MES_LEN + ENC_SYM: sel_request_new = RSC_MES_LEN + ENC_SYM - con_counter_new;
+            default: sel_request_new = '0;
+        endcase
     end
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

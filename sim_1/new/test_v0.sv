@@ -38,7 +38,7 @@ module test();
 //    initial begin
 //        gen_data = 'x;
 //        #(26 * CLOCK_TICK + CLOCK_MARGIN);
-//        for (int i = 0; i < 8; i ++) begin
+//        for (int i = 0; i < 16; i ++) begin
 //            #(2 * CLOCK_TICK) gen_data = 16'h0123;
 //            #(2 * CLOCK_TICK) gen_data = 16'h4567;
 //            #(2 * CLOCK_TICK) gen_data = 16'h89ab;

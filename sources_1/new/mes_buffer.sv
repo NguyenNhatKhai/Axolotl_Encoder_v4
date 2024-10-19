@@ -14,21 +14,14 @@ module enc_mes_buffer (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    generate
-        for (genvar i = ENC_MES_BUF_DEP - 1; i >= 0; i --) begin
-            always_ff @(posedge clk or negedge rst_n) begin
-                if (!rst_n) begin
-                    mes_buf_data[i] <= '0;
-                end else if (!con_stall) begin
-                    if (i < ENC_SYM) begin
-                        mes_buf_data[i] <= gen_data[i];
-                    end else begin
-                        mes_buf_data[i] <= mes_buf_data[i - ENC_SYM];
-                    end
-                end
-            end
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            mes_buf_data <= '0;
+        end else if (!con_stall) begin
+            mes_buf_data[ENC_SYM - 1 : 0] <= gen_data;
+            mes_buf_data[ENC_MES_BUF_DEP - 1 : ENC_SYM] <= mes_buf_data[ENC_MES_BUF_DEP - ENC_SYM - 1: 0];
         end
-    endgenerate
+    end
 
 endmodule
 
